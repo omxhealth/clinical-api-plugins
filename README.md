@@ -52,4 +52,5 @@ click submit.
 ## More information
 
 There is more detailed information on options available when using the medication search
-widget in the wiki for this repository.
+widget in the [wiki](https://github.com/omxhealth/medication-search-plugin/wiki) for this 
+repository.
