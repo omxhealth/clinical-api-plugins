@@ -1,0 +1,9 @@
+version: "3.9"
+services:
+  sample-app:
+    build: sample-app
+    volumes:
+      - ./sample-app:/app
+    ports:
+      - "8080:4567"
+    

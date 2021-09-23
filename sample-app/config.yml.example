@@ -1,0 +1,5 @@
+# drugbank api location
+api_server: https://api.drugbank.com
+
+# set your api key here
+api_key: 

@@ -1,0 +1,39 @@
+.app {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
+  margin-top: 60px;
+  width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.app .regular-field {
+  width: 400px;
+  line-height: 1.4;
+  font-size: 1em;
+  margin: 4px 0 0;
+  padding: 0 7px;
+  background: none;
+  box-shadow: none;
+  max-width: 100%;
+  flex-grow: 1;
+  border: 1px solid;
+}
+
+.app .form-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.app .form-row label {
+  margin-right: 10px;
+}
+
+.app .form-row db-medication-search {
+  flex-grow: 1;
+}
