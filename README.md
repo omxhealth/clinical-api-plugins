@@ -1,6 +1,6 @@
 # Medication Search Plugin Technical Implementation Guide
 
-
+![not-logged-in](docs/images/med-search-plugin.png)
 
 1. Download the _drugbank-ui.min.js_ file [here](https://github.com/omxhealth/clinical-api-plugins/releases).
 2. Place it in the same location in your project that other 3rd party javascript files reside.
@@ -71,8 +71,7 @@ class MockApp < Sinatra::Base
   end
 end
 ```
-
-
+<br/>
 
 # Example of Medication Search Plugin Implementation
 
