@@ -123,3 +123,7 @@ lookup, where we have a preset value now shows a medication ("Acetaminophen [Tyl
 
 Enter one or two more medications or change the existing medication if you like, and
 click submit.
+
+## Compatibility
+
+The plugins provided here are [Web Components](https://developer.mozilla.org/en-US/docs/Web/Web_Components). They should work in most modern browsers, including: Firefox (as of version 63), Chrome, Opera, Safari, and Edge (as of version 79).
