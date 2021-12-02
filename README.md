@@ -4,9 +4,10 @@
 
 1. Download the _drugbank-ui.min.js_ file [here](https://github.com/omxhealth/clinical-api-plugins/releases).
 2. Place it in the same location in your project that other 3rd party javascript files reside.
-3. On an HTML page where you want to use it, you will need to load this file before you can use the web component.
+3. On an HTML page where you want to use it, you will need to load this file before you can use the web component. The web component also has a dependency on VueJS (^2.6.12).
 
 ```html
+<script src="https://unpkg.com/vue"></script>
 <script src="YOUR/JAVASCRIPT/LOCATION/drugbank-ui.min.js"></script>
 ```
 
