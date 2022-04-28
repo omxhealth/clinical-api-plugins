@@ -1,6 +1,5 @@
 <meta charset="utf-8">
 <title>medication-search demo</title>
-<script src="https://unpkg.com/vue"></script>
 <script src="/js/drugbank-ui.min.js"></script>
 <link rel="stylesheet" href="/css/app.css">
 
@@ -23,7 +22,7 @@
     <div class='form-row'>
       <label>Medication 1:</label>
       <db-medication-search
-        refresh_jwt="/protected-refresh-jwt"
+        refresh-jwt="/protected-refresh-jwt"
         name="medication1"
         value=<%= @medications && @medications.length > 0 ? @medications[0] : "DBPC0482409" %>
       ></db-medication-search>
@@ -31,7 +30,7 @@
     <div class='form-row'>
       <label>Medication 2:</label>
       <db-medication-search
-        refresh_jwt="/protected-refresh-jwt"
+        refresh-jwt="/protected-refresh-jwt"
         name="medication2"
         value=<%= @medications[1] if @medications && @medications.length > 1 %>
       ></db-medication-search>
@@ -39,7 +38,7 @@
     <div class='form-row'>
       <label>Medication 3:</label>
       <db-medication-search
-        refresh_jwt="/protected-refresh-jwt"
+        refresh-jwt="/protected-refresh-jwt"
         name="medication3"
         value=<%= @medications[2] if @medications && @medications.length > 2 %>
       ></db-medication-search>
