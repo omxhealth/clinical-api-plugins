@@ -24,7 +24,7 @@
       <db-medication-search
         refresh-jwt="/protected-refresh-jwt"
         name="medication1"
-        value=<%= @medications && @medications.length > 0 ? @medications[0] : "DBPC0482409" %>
+        value="<%= @medications[0] if @medications && @medications.length > 0 %>"
       ></db-medication-search>
     </div>
     <div class='form-row'>
@@ -32,7 +32,7 @@
       <db-medication-search
         refresh-jwt="/protected-refresh-jwt"
         name="medication2"
-        value=<%= @medications[1] if @medications && @medications.length > 1 %>
+        value="<%= @medications[1] if @medications && @medications.length > 1 %>"
       ></db-medication-search>
     </div>
     <div class='form-row'>
@@ -40,7 +40,7 @@
       <db-medication-search
         refresh-jwt="/protected-refresh-jwt"
         name="medication3"
-        value=<%= @medications[2] if @medications && @medications.length > 2 %>
+        value="<%= @medications[2] if @medications && @medications.length > 2 %>"
       ></db-medication-search>
     </div>
     <div class='form-row'>
