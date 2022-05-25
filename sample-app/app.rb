@@ -20,16 +20,13 @@ class SampleApp < Sinatra::Base
   end
 
   get "/" do
+    @medications = {}
     erb :sample
   end
 
   post "/" do
     @name = @params['name']
-    @medications = [
-      @params['medication1'],
-      @params['medication2'],
-      @params['medication3']
-    ].compact
+    @medications = @params['medications']
     erb :sample
   end
 

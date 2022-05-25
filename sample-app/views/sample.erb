@@ -17,30 +17,49 @@
   <form action="/" method="POST" id="sample-form">
     <div class='form-row'>
       <label>Your name:</label>
-      <input class="regular-field" type="text" name="name" value=""/>
+      <input class="regular-field" type="text" name="name" value="<%= @name %>"/>
     </div>
     <div class='form-row'>
       <label>Medication 1:</label>
       <db-medication-search
         refresh-jwt="/protected-refresh-jwt"
-        name="medication1"
-        value="<%= @medications[0] if @medications && @medications.length > 0 %>"
+        name="medications[0]"
+        value="<%= @medications['0'] %>"
       ></db-medication-search>
+    </div>
+    <div class='form-row'>
+      <h4>Modified step order</h4>
     </div>
     <div class='form-row'>
       <label>Medication 2:</label>
       <db-medication-search
         refresh-jwt="/protected-refresh-jwt"
-        name="medication2"
-        value="<%= @medications[1] if @medications && @medications.length > 1 %>"
+        name="medications[1]"
+        value="<%= @medications['1'] %>"
+        search-stages="route,form,strengths"
       ></db-medication-search>
+    </div>
+    <div class='form-row'>
+      <h4>Change Minimum Level (2)</h4>
     </div>
     <div class='form-row'>
       <label>Medication 3:</label>
       <db-medication-search
         refresh-jwt="/protected-refresh-jwt"
-        name="medication3"
-        value="<%= @medications[2] if @medications && @medications.length > 2 %>"
+        name="medications[2]"
+        value="<%= @medications['2'] %>"
+        min-level="2"
+      ></db-medication-search>
+    </div>
+    <div class='form-row'>
+      <h4>Restyled</h4>
+    </div>
+    <div class='form-row styled'>
+      <label>Medication 4:</label>
+      <db-medication-search
+        refresh-jwt="/protected-refresh-jwt"
+        name="medications[3]"
+        value="<%= @medications['3'] %>"
       ></db-medication-search>
     </div>
     <div class='form-row'>
@@ -49,13 +68,26 @@
   </form>
 
   <div id="message">
-    <% if @medications %>
-      Hello <%= !@name.empty? ? @name : 'Anonymous Person' %>, you chose:
+    <% if @medications && !@medications.empty? %>
+      Hello <%= (@name && !@name.empty?) ? @name : 'Anonymous Person' %>, you chose:
       <ul>
-        <% @medications.each do |dbpcid| %>
+        <% @medications.values.each do |dbpcid| %>
           <li><%= dbpcid %></li>
         <% end %>
       </ul>
     <% end %>
   <div>
 </div>
+
+<style>
+.styled {
+  --db-lookup-extra-padding-vertical: 10px;
+  --db-lookup-extra-padding-horizontal: 20px;
+  --db-lookup-corner-radius: 5px;
+  --db-lookup-border-width: 2px;
+  --db-lookup-font-family: courier;
+  --db-tag-corner-radius: 10px;
+  --db-tag-extra-padding-horizontal: 10px;
+  --db-tag-extra-padding-vertical: 10px;
+}
+</style>
