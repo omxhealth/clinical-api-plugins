@@ -1,6 +1,6 @@
 # Clinical Plugins Technical Implementation Guide
 
-This guide details how to use our clinical plugins. It includes information on how to download our plugin library as well as information on compatibility, authentication options, and debugging that is common to all plugins. It also contains specific information on setting up our **[Medication Search Plugin](#medication-search-plugin)** and **[Drug-Drug Interactions Plugin](#drug-drug-interactions-ddi-plugin-guide)**.
+This guide details how to use our clinical plugins. It includes information on how to download our plugin library as well as information on compatibility, authentication options, and debugging that is common to all plugins. It also contains specific information on setting up our **[Medication Search Plugin](#medication-search-plugin)**, **[Condition Search Plugin](#condition-search-plugin)**, **[ICD-10 Search Plugin](#icd-10-search-plugin)**, and **[Drug-Drug Interactions Plugin](#drug-drug-interactions-ddi-plugin-guide)**.
 
 ## Compatibility
 
@@ -114,7 +114,7 @@ The most basic way you can use our medication search is the following:
 </form>
 ```
 
-When you submit this form, the DrugBank [product concept](https://docs.drugbank.com/v1/#about-product-concepts) ID representing your selected medication will be included just like any other input element's, where the parameter name will match the `name` value. In the above example, the selected medication DBPCID would be accessible via the `"medication-1"` parameter in whatever code is processing the form.
+When you submit this form, the DrugBank [product concept](https://docs.drugbank.com/v1/#about-product-concepts) ID representing your selected medication will be sent in the same way that regular form `<input>` values are sent, where the parameter name will match the `name` value. In the above example, the selected medication DBPCID would be accessible via the `"medication-1"` parameter in whatever code is processing the form.
 
 ## Initializing with an existing value
 
@@ -141,12 +141,12 @@ Here's how you can listen to the component defined above (name="medication-1") v
 medicationSearch = document.getElementsByName("medication-1")[0]
 
 // Attach a listener
-medicationSearch.addEventListener("medication-changed", function(e) {
+medicationSearch.addEventListener("db-value-changed", function(e) {
   console.log(e.detail.drugbank_pcid)
 })
 ```
 
-The above code simply logs the `drugbank_pcid`. The `medication-changed` event is a `CustomEvent`, and its detail object looks like this:
+The above code simply logs the `drugbank_pcid`. The `db-value-changed` event is a `CustomEvent`, and its detail object looks like this:
 
 ```json
 {
@@ -156,7 +156,7 @@ The above code simply logs the `drugbank_pcid`. The `medication-changed` event i
 
 The `drugbank_pcid` will be `null` if nothing is selected or the user clears the selection.
 
-Note: Previous documentation refers to a `drugbank_id` value in the `medication-changed` event. While this value still exists, it is considered deprecated. You should change any code that refers to it to instead use `drugbank_pcid`.
+Note: This event was previously named `medication-changed`; although this event is still emitted, it should be considered deprecated. In addition, previous documentation referred to a `drugbank_id` value in the `medication-changed` event. While this value still exists, it is also considered deprecated. You should change any code using this search plugin to capture `db-value-changed` events and only rely on the `drugbank_pcid` key within the detail object.
 
 ## Customization
 
@@ -207,6 +207,128 @@ Although the plugin encapsulates API calls to ensure they are called appropriate
 ![search-error](docs/images/search-error.png)
 
 Unlike in the case of an expired JWT, the plugin remains active; another successful API call will restore the original plugin colours and remove the error text.
+
+# Condition Search Plugin
+
+![condition-search-plugin](docs/images/condition-search-plugin.png)
+
+## Basic use
+
+Similar to our medication search plugin, the condition search can be [added to a form](#basic-use):
+
+```html
+<form>
+  <db-condition-search name="condition-1" jwt="your-jwt-token"></db-condition-search>
+</form>
+```
+
+When you submit this form, the DrugBank [condition](https://docs.drugbank.com/v1/#conditions) ID representing your selected condition will be sent in the same way that regular form `<input>` values are sent, where the parameter name will match the `name` value.
+
+## Initializing with an existing value
+
+If you have a previously specified condition ID, you can initialize the search using the `value` prop:
+
+```html
+<db-condition-search 
+  name="condition-1"
+  value="DBCOND0027886" 
+  jwt="your-jwt-token"
+></db-condition-search>
+```
+
+In this specific example, the search will populate with "Diabetes Mellitus".
+
+## Listening to change events
+
+Similar to the medication search plugin, you can also [listen for change events](#listening-to-change-events).
+
+This works almost identically, with the component emitting a `db-value-changed` event where the detail object will look like:
+
+```json
+{
+  "drugbank_id": "DBCOND0027886"
+}
+```
+
+The `drugbank_id` will be `null` if nothing is selected or the user clears the selection.
+
+## Customization
+
+### Attributes
+
+At the moment, there is a single attribute that can be specified:
+
+- `min-search-chars`: set the minimum number of characters to enter before making calls to the API. Must be between 1 and 5 (default 3).
+
+### Custom styling
+
+There are a few aspects of the condition search plugin's style that you can change by setting CSS variables in a containing element. These are the same as outlined for the [medication search plugin](#custom-styling)
+
+## Warnings
+
+The condition search handles [JWT](#expired-jwt-warning) and [search](#api-errors) errors the same as the medication search plugin.
+
+# ICD-10 Search Plugin
+
+![icd10-search-plugin](docs/images/icd10-search-plugin.png)
+
+## Basic use
+
+Similar to our medication search plugin, the ICD-10 search can be [added to a form](#basic-use):
+
+```html
+<form>
+  <db-icd10-search name="icd10-1" jwt="your-jwt-token"></db-icd10-search>
+</form>
+```
+
+When you submit this form, the [ICD-10](https://icd.who.int/browse10/2019/en) identifier representing your selected concept will be sent in the same way that regular form `<input>` values are sent, where the parameter name will match the `name` value.
+
+## Initializing with an existing value
+
+If you have a previously specified ICD-10 identifier, you can initialize the search using the `value` prop:
+
+```html
+<db-icd10-search 
+  name="icd10-1"
+  value="A01.1" 
+  jwt="your-jwt-token"
+></db-icd10-search>
+```
+
+In this specific example, the search will populate with "Paratyphoid fever A (A01.1)".
+
+## Listening to change events
+
+Similar to the medication search plugin, you can also [listen for change events](#listening-to-change-events).
+
+This works almost identically, with the component emitting a `db-value-changed` event where the detail object will look like:
+
+
+```json
+{
+  "identifier": "A01.1"
+}
+```
+
+The `identifier` will be `null` if nothing is selected or the user clears the selection.
+
+## Customization
+
+### Attributes
+
+At the moment, there is a single attribute that can be specified:
+
+- `min-search-chars`: set the minimum number of characters to enter before making calls to the API. Must be between 1 and 5 (default 3). Note that for the ICD-10 search specifically, it is not advisable to set this attribute to the max value as users may wish to search for ICD-10 concepts by their alphanumeric code, which may be as short as three characters!
+
+### Custom styling
+
+There are a few aspects of the ICD-10 search plugin's style that you can change by setting CSS variables in a containing element. These
+are the same as outlined for the [medication search plugin](#custom-styling)
+
+## Warnings
+
+The ICD-10 search handles [JWT](#expired-jwt-warning) and [search](#api-errors) errors the same as the medication search plugin.
 
 # Drug-Drug Interactions (DDI) Plugin Guide
 
@@ -317,6 +439,11 @@ Enter one or two more medications or change the existing medication if you like,
 click submit.
 
 # CHANGELOG
+
+v0.4.0:
+- added the db-condition-search and db-icd10-search plugins
+- updated to a uniform search icon across all search plugins
+- changed the [`medication-changed` event](#listening-to-change-events) to `db-value-changed`. The existing event is still emitted in addition to the `db-value-changed` event but should be considered deprecated and will be removed in the future.
 
 v0.3.0:
 - added the db-ddi-viewer component to display drug-drug interaction information
