@@ -1,26 +1,9 @@
-<meta charset="utf-8">
-<title>medication-search demo</title>
-<script src="/js/drugbank-ui.min.js"></script>
-<link rel="stylesheet" href="/css/app.css">
-
-<div class="app">
-  <% if logged_in? %>
-    <b>You're "logged in"</b>
-    Click <a href="/logout">here</a> to destroy the logged in session.
-  <% else %>
-    <b>You aren't logged in</b>
-    Click <a href="/login/345">here</a> to do a sample login as user 345!
-  <% end %>
-
-  <br/><br/>
-
+<div class="medication-search">
   <form action="/" method="POST" id="sample-form">
-    <div class='form-row'>
-      <label>Your name:</label>
-      <input class="regular-field" type="text" name="name" value="<%= @name %>"/>
+    <div class='form-row mt-4'>
+      <label>Medication 1:</label>
     </div>
     <div class='form-row'>
-      <label>Medication 1:</label>
       <db-medication-search
         refresh-jwt="/protected-refresh-jwt"
         name="medications[0]"
@@ -28,11 +11,13 @@
         shared-jwt="true"
       ></db-medication-search>
     </div>
-    <div class='form-row'>
-      <h4>Modified step order</h4>
+    <div class='form-row section-start'>
+      <h5>Modified step order</h5>
     </div>
     <div class='form-row'>
       <label>Medication 2:</label>
+    </div>
+    <div class='form-row'>
       <db-medication-search
         refresh-jwt="/protected-refresh-jwt"
         name="medications[1]"
@@ -41,11 +26,13 @@
         shared-jwt="true"
       ></db-medication-search>
     </div>
-    <div class='form-row'>
-      <h4>Change Minimum Level (2)</h4>
+    <div class='form-row section-start'>
+      <h5>Change Minimum Level (2)</h5>
     </div>
     <div class='form-row'>
       <label>Medication 3:</label>
+    </div>
+    <div class='form-row'>
       <db-medication-search
         refresh-jwt="/protected-refresh-jwt"
         name="medications[2]"
@@ -54,11 +41,13 @@
         shared-jwt="true"
       ></db-medication-search>
     </div>
+    <div class='form-row section-start'>
+      <h5>Restyled</h5>
+    </div>
     <div class='form-row'>
-      <h4>Restyled</h4>
+      <label>Medication 4:</label>
     </div>
     <div class='form-row styled'>
-      <label>Medication 4:</label>
       <db-medication-search
         refresh-jwt="/protected-refresh-jwt"
         name="medications[3]"
@@ -66,32 +55,30 @@
         shared-jwt="true"
       ></db-medication-search>
     </div>
-    <div class='form-row'>
-      <input type="submit" value="Submit" />
+    <div class='form-row section-start'>
+      <input class="btn btn-primary btn-lg" type="submit" value="Submit" />
     </div>
   </form>
-
-  <div id="message">
+  <div id="message" class="mt-5">
     <% if @medications && !@medications.empty? %>
-      Hello <%= (@name && !@name.empty?) ? @name : 'Anonymous Person' %>, you chose:
+      <h5>Selected Medications</h5>
       <ul>
         <% @medications.values.each do |dbpcid| %>
           <li><%= dbpcid %></li>
         <% end %>
       </ul>
     <% end %>
-  <div>
+  </div>
 </div>
-
 <style>
-.styled {
-  --db-lookup-extra-padding-vertical: 10px;
-  --db-lookup-extra-padding-horizontal: 20px;
-  --db-lookup-corner-radius: 5px;
-  --db-lookup-border-width: 2px;
-  --db-lookup-font-family: courier;
-  --db-tag-corner-radius: 10px;
-  --db-tag-extra-padding-horizontal: 10px;
-  --db-tag-extra-padding-vertical: 10px;
-}
+  .styled {
+    --db-lookup-extra-padding-vertical: 10px;
+    --db-lookup-extra-padding-horizontal: 20px;
+    --db-lookup-corner-radius: 5px;
+    --db-lookup-border-width: 2px;
+    --db-lookup-font-family: courier;
+    --db-tag-corner-radius: 10px;
+    --db-tag-extra-padding-horizontal: 10px;
+    --db-tag-extra-padding-vertical: 10px;
+  }
 </style>

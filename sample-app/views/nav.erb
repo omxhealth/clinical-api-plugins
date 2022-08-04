@@ -1,0 +1,18 @@
+<ul class="nav nav-tabs mt-5">
+  <li class="nav-item">
+    <a class="nav-link <%= request.path_info == '/' ? 'active' : '' %>" aria-current="page" href="/">Medication Search</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link <%= request.path_info == '/ddi' ? 'active' : '' %>" href="/ddi">DDI</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link <%= request.path_info == '/other' ? 'active' : '' %>" href="/other">Conditions & ICD10</a>
+  </li>
+  <li class="nav-item ms-auto">
+    <% if logged_in? %>
+      <a class="btn btn-primary" href="/logout">Logout</a>
+    <% else %>
+      <a class="btn btn-primary" href="/login/345">Login</a>
+    <% end %>
+  </li>
+</ul>

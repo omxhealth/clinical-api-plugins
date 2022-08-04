@@ -1,29 +1,8 @@
-<meta charset="utf-8">
-<title>medication-search demo</title>
-<script src="/js/drugbank-ui.min.js"></script>
-<link rel="stylesheet" href="/css/app.css">
-
-<div class="app">
-  <% if logged_in? %>
-    <b>You're "logged in"</b>
-    Click <a href="/logout">here</a> to destroy the logged in session.
-  <% else %>
-    <b>You aren't logged in</b>
-    Click <a href="/login/345">here</a> to do a sample login as user 345!
-  <% end %>
-
-  <br/><br/>
-
-  <form action="/" method="POST" id="sample-form">
-    <db-ddi-viewer
-      name="ddi"
-      refresh-jwt="/protected-refresh-jwt"
-      shared-jwt="true"
-    ></db-ddi-viewer>
-    <br/><br/>
-    <div class='form-row'>
-      <label>Medications:</label>
-    </div>
+<form action="/" method="POST" id="sample-form">
+<div class="container mt-4">
+  <div class="row">
+  <div class="col-sm">
+    <h5>Medications</h5>
     <div class='form-row'>
       <db-medication-search
         refresh-jwt="/protected-refresh-jwt"
@@ -56,35 +35,41 @@
         shared-jwt="true"
       ></db-medication-search>
     </div>
-  </form>
-
-  <div id="message">
-    <% if @medications && !@medications.empty? %>
-      Hello <%= (@name && !@name.empty?) ? @name : 'Anonymous Person' %>, you chose:
-      <ul>
-        <% @medications.values.each do |dbpcid| %>
-          <li><%= dbpcid %></li>
-        <% end %>
-      </ul>
-    <% end %>
-  <div>
-</div>
-
+    <div class='form-row'>
+      <button
+        type="button"
+        class="btn btn-primary btn-lg"
+        id="check-interactions"
+        onclick="checkInteractions()"
+      >Check Interactions</button>
+    </div>
+  </div>
+  <div class="col-sm">
+    <h5>Interactions</h5>
+    <db-ddi-viewer
+      name="ddi"
+      refresh-jwt="/protected-refresh-jwt"
+      shared-jwt="true"
+      display="narrow"
+    ></db-ddi-viewer>
+  </div>
+</form>
 <script>
-    const ddiViewer = document.getElementsByName('ddi')[0]
-    const medicationSearches = [...document.getElementsByTagName('db-medication-search')]
+  const ddiViewer = document.getElementsByName('ddi')[0]
+  const medicationSearches = [...document.getElementsByTagName('db-medication-search')]
+  const checkInteractionsBtn = document.getElementById('check-interactions')
 
-    let medications = {}
+  let medications = {}
 
-    medicationSearches.forEach(search => {
-        const name = search.getAttribute('name')
-        search.addEventListener("medication-changed", function(e) {
-            medications[name] = e.detail.drugbank_pcid
-            const dbpcIds = Object.values(medications)
-            ddiViewer.setAttribute('drugbank-pcid', dbpcIds.join(','))
-        })
-    });
+  medicationSearches.forEach(search => {
+      const name = search.getAttribute('name')
+      search.addEventListener("db-value-changed", function(e) {
+          medications[name] = e.detail.drugbank_pcid
+      })
+  });
+
+  function checkInteractions() {
+    const dbpcIds = Object.values(medications)
+    ddiViewer.setAttribute('drugbank-pcid', dbpcIds.join(','))
+  }
 </script>
-
-<style>
-</style>

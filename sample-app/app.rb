@@ -29,6 +29,10 @@ class SampleApp < Sinatra::Base
     erb :sample_ddi
   end
 
+  get "/other" do
+    erb :sample_other
+  end
+
   post "/" do
     @name = @params['name']
     @medications = @params['medications']

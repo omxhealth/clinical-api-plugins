@@ -1,0 +1,22 @@
+<form action="/" method="POST" id="sample-form">
+  <div class='form-row mt-4'>
+    <label>Conditions:</label>
+  </div>
+  <div class='form-row'>
+    <db-condition-search
+      name="conditions[1]"
+      refresh-jwt="/protected-refresh-jwt"
+      shared-jwt="true"
+    ></db-condition-search>
+  </div>
+  <div class='form-row section-start'>
+    <label>ICD10:</label>
+  </div>
+  <div class='form-row'>
+    <db-icd10-search
+      name="icd10s[1]"
+      refresh-jwt="/protected-refresh-jwt"
+      shared-jwt="true"
+    ></db-icd10-search>
+  </div>
+</form>
