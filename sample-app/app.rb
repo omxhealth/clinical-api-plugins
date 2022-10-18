@@ -8,6 +8,7 @@ class SampleApp < Sinatra::Base
   CONFIG = YAML.load(File.read(File.join(__dir__, 'config.yml'))).transform_keys(&:to_sym)
 
   enable :sessions
+  enable :logging
 
   helpers do
     def logged_in?
@@ -78,7 +79,9 @@ class SampleApp < Sinatra::Base
     res = http.request(req)
     # The response from our API comes back in JSON, with a single field: token. Here
     # we're passing that value back as the response from the server to our client-side
-    # JavaScript code.
-    JSON.parse(res.body)['token']
+    # JavaScript code. If there's an error, we just log the whole json response.
+    json = JSON.parse(res.body)
+    logger.error(json) unless json['error'].nil?
+    json['token']
   end
 end

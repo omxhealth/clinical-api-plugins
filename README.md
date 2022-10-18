@@ -438,6 +438,45 @@ lookup, where we have a preset value now shows a medication ("Acetaminophen [Tyl
 Enter one or two more medications or change the existing medication if you like, and
 click submit.
 
+# Troubleshooting
+
+Here are some of the most common problems we've encountered in setting this up for the
+first time, along with basic troubleshooting steps. If none of these work or you run
+into something else, please contact us.
+
+### I can't see anything when I go to localhost:8080 or my browser says the site can't be reached.
+
+Make sure that the services hosting the sample app are up and running. To do this, check:
+
+```bash
+docker-compose ps
+```
+
+If everything is successfully running, you should see `Up` under the State column. If you
+don't see this, try running `docker-compose up -d sample-app` again. If it still doesn't
+stay `Up`, you might be able to find out why from the logs: `docker-compose logs sample-app`.
+
+### The sample app is running, but all the plugins say "Your token has expired".
+
+First make sure you've clicked the "LOGIN" button to simulate a login. This only lasts
+while the sample app is running, so if you've shut down your computer or Docker and
+restarted it, your previous login will be lost.
+
+If you still see "Your token has expired" after logging in, make sure you have a proper
+config.yml file with your API key as explained above. If you have that but are still
+having problems, check for errors in the server log by running the following in your
+terminal/console:
+
+```bash
+docker-compose logs -f sample-app
+```
+
+And then refresh your browser page. You should see new lines appear in the terminal
+window. Look for any that include `ERROR --`. The sample app uses your API key to
+get a temporary token that's safer to expose to client-side applications. If the
+key was somehow entered incorrectly in config.yml, you'll see messages that indicate
+it's expired or invalid.
+
 # CHANGELOG
 
 v0.4.0:
