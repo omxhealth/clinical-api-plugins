@@ -95,7 +95,7 @@ the browser tab.
 We sometimes log warnings if the plugin receives settings that aren't appropriate, even if it can recover from them. However, all logging is turned off by default. A good first step to take if the plugin isn't operating as expected is to include the following `meta` tag where you include the `drugbank-ui` script tag:
 
 ```html
-<meta property="DRUGBANK_UI_LOG_LEVEL" content="info" />
+<meta name="DRUGBANK_UI_LOG_LEVEL" content="info" />
 ```
 
 We recommend using this when developing. The level can also be set to `'trace'`, `'debug'`, `'warn'`, `'error'`, or `'silent'` (the default).
@@ -170,6 +170,9 @@ There are many optional attributes that can be set on the lookup that correspond
 - `min-search-chars`: set the minimum number of characters to enter before making calls to the API. Must be between 1 and 5 (default 3).
 - `unbranded`: if true, will exclude all branded product concepts from the search (returns generic entries). This can be useful to decrease the number of similar options returned by the search.
 - `region`: set the region(s) to filter on search results. By default, search results will come from any region in a subscription. This can either be a single region (example: `us`) or multiple comma-separated regions (example: `us,ca,it`). See [selecting your region](https://docs.drugbank.com/v1/#selecting-your-region) in the API documentation for all available region codes. Invalid region codes will cause an error when making the subsequent API call. Whenever there is an API error like this, the lookup will change into an error state and indicate an error communicating with the API.
+- `dropdown-on-focus`: When set to `false`, the selection dropdown will *only* appear when there's text being 
+entered. The default (`true`) behaviour is for the dropdown to always be open when the search field has keyboard
+focus.
 
 ### Custom styling
 
@@ -478,6 +481,24 @@ key was somehow entered incorrectly in config.yml, you'll see messages that indi
 it's expired or invalid.
 
 # CHANGELOG
+
+v0.5.0:
+- automatic synchronization of internal plugin selection with web component value
+attribute for all components (making it much easier to set the value of these plugins
+from custom Javascript elsewhere on the page)
+- fixed issue with setting medication search-stages to an empty string. This will now
+correctly make the `db-medication-search` only do the first (non-optional) step of searching
+for the ingredient (the default when not setting this attribute at all is still to search
+by ingredient, strengths, route, then form)
+- added `dropdown-on-focus` option to the `db-medication-search`, which defaults to `true`.
+When set to `false`, the lookup dropdown will *only* appear when there's text being 
+entered. The default behaviour is for the dropdown to always be open when the lookup
+has keyboard focus.
+- added `name` to `db-value-changed` event detail for `db-medication-search` and
+`db-condition-search` plugins
+- added `description` do `db-value-changed` event detail for `db-icd10-search` plugin
+- changed `meta` tag `property` to the more standard `name` attribute for turning on various
+debugging information
 
 v0.4.0:
 - added the db-condition-search and db-icd10-search plugins
